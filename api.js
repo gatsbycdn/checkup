@@ -17,7 +17,7 @@ class apiDAO {
         try {
         const options = {
             url: "https://" + hostname,
-            timeout: 1500,
+            //timeout: 1500,
             retry: 2
         }
         const response = await got(options)        
