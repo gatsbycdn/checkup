@@ -91,4 +91,3 @@ class apiDAO {
     }
 
 module.exports = { apiDAO: apiDAO }
-apiDAO.tisu()
