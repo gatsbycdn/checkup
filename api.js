@@ -20,7 +20,7 @@ class apiDAO {
             //timeout: 1500,
             retry: 2
         }
-        const response = await got(options)        
+        const response = await got(options)
         //console.log(response.statusMessage)
         //console.log(response.statusCode)
         return response.statusCode
@@ -66,6 +66,5 @@ class apiDAO {
         }
     }
     }
-
 
 module.exports = { apiDAO: apiDAO }
