@@ -6,6 +6,7 @@ const port = 3001
 
 app.get('/test', (req, res) => {
     apiDAO.updateStatus()
+    apiDAO.tisu()
     res.send('OK')
 })
 
