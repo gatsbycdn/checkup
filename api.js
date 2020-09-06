@@ -2,16 +2,20 @@ require('dotenv').config()
 const { MongoClient } = require('mongodb')
 const got = require('got')
 
+let configs
+
 class apiDAO {
-    static getDb () {
-        const url = process.env.LOCAL_DB_URI || 'mongodb://localhost:27017'
-        const client = new MongoClient(
-          url,
-          { useNewUrlParser: true, useUnifiedTopology: true },
-          { poolSize: 50, w: 1, wtimeout: 2500 }
-        )
-        return client
-    }
+
+    static async injectDB(conn) {
+        if (configs) {
+          return
+        }
+        try {
+          configs = await conn.db('test').collection('configs')
+        } catch (error) {
+          console.error(`Unable to establish collection handles in userDAO: ${e}`)
+        }
+      }
 
     static async testGot (hostname) {
         try {
@@ -55,8 +59,6 @@ class apiDAO {
 
     static async getHostname () {
         try {
-            const conn = await apiDAO.getDb().connect()
-            const configs = await conn.db('test').collection('configs')
             const config = await configs.find({ type: 'A' }, { name: 1, _id: 0 }).limit(50).toArray()
             let newConfig = await config
             .filter( obj => isNaN(Number(obj['name'].slice(1,3))) === false )
@@ -70,8 +72,6 @@ class apiDAO {
 
     static async updateStatus () {
         try {
-            const conn = await apiDAO.getDb().connect()
-            const configs = await conn.db('test').collection('configs')
             const hostNames = await Promise.all((await apiDAO.getHostname()).map(
                 async (hostname) => {
                     console.log(hostname)
@@ -82,7 +82,6 @@ class apiDAO {
                 ))
                 .then(res => res)
             console.log(hostNames)
-
         } catch (error) {
         console.log(error)
         return error
