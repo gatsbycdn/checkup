@@ -21,7 +21,7 @@ MongoClient.connect(
       process.exit(1)
     })
     .then(async client => {
-      await ConfigsDAO.injectDB(client)
+      await apiDAO.injectDB(client)
       app.listen(port, () => {
         console.log(`listening at http://localhost:${port}`)
     })
